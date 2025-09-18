@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from 'axios';
+  import toast from "react-hot-toast"; 
 const NoteForm=({refreshNotes,editingNote,setEditingNote})=>{
     const [title,setTitle]=useState('');
     const [description,setDescription]=useState('');
@@ -14,17 +15,23 @@ const NoteForm=({refreshNotes,editingNote,setEditingNote})=>{
      const handleSubmit=async()=>{
         //update existing note
           if(editingNote){
-             await axios.put(`http://localhost:3000/api/notes/${editingNote._id}`,{
+            const res = await axios.put(`http://localhost:3000/api/notes/${editingNote._id}`,{
                 title,
                 description,
             })
+            if (res.data.success){
+                 toast.success("Updated successfully")
+            }
             setEditingNote(null);
             setTitle("");
               setDescription("");
             refreshNotes();
 
           }else{
-              await axios.post("http://localhost:3000/api/notes",{title,description});
+             const res= await axios.post("http://localhost:3000/api/notes",{title,description});
+              if (res.data.success){
+                 toast.success("Added")
+            }
               setTitle("");
               setDescription("");
               refreshNotes();
