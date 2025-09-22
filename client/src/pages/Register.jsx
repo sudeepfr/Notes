@@ -19,13 +19,15 @@ const Register=()=>{
 
 
      return (
-        <form onSubmit={handleSubmit}>
-            <h2>Register</h2>
-            <input placeholder="Name" value={form.name} onChange={(e)=>setForm ({...form,name:e.target.value})} />
-            <input placeholder="Email" value={form.email} onChange={(e)=>setForm({...form,email:e.target.value})}/>
-            <input type="password" placeholder="passwod" value={form.password} onChange={(e)=>setForm({...form,password:e.target.value})} />
-            <button type="submit">Register</button>
-        </form>
+        <div className="max-w-md mx-auto bg-white shadow-md rounded p-6">
+            <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input className="w-full border px-3 py-2 rounded" placeholder="Name" value={form.name} onChange={(e)=>setForm ({...form,name:e.target.value})} />
+            <input className="w-full border px-3 py-2 rounded" placeholder="Email" value={form.email} onChange={(e)=>setForm({...form,email:e.target.value})}/>
+            <input  className="w-full border px-3 py-2 rounded"type="password" placeholder="passwod" value={form.password} onChange={(e)=>setForm({...form,password:e.target.value})} />
+            <button  className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" type="submit">Sign Up</button>
+          </form>
+        </div>
      );
 }
 
