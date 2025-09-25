@@ -1,15 +1,14 @@
 import { useState } from "react"
-import api from "../api/axios";
 import { AuthContext } from "../context/AuthContext";
 import { useContext } from "react";
 import { useEffect } from "react";
+import api from "../api/axios";
 const Notes=()=>{
-    const {user,logout}=useContext(AuthContext)
     const [form,setForm]=useState({title:"",description:""});
     const [notes,setNotes]=useState([]);
 
      const loadNotes=async()=>{
-         const res=await api.get("/api/notes",{ withCredentials: true });
+         const res=await api.get(`/api/notes`);
          setNotes(res.data);
      }
 
@@ -18,14 +17,14 @@ const Notes=()=>{
      },[]);
 
      const addNote=async()=>{
-         e.preventDefault()
+         e.preventDefault();
          if (!form.title || !form.description) return;
-         await api.post('/api/notes',form,{ withCredentials: true });
+         await api.post(`/api/notes`,form);
          setForm({title:"",description:""});
          loadNotes();
      }
       const deleteNote=async(id)=>{
-         await api.delete(`/api/notes/${id}`, { withCredentials: true });
+         await api.delete(`/api/notes/${id}`);
          loadNotes();
       }
 

@@ -4,10 +4,12 @@ import 'dotenv/config';
 import connectDB from './config/db.js';
 import noteRouter from './routes/noteRoutes.js'
 import authRouter from './routes/userRoutes.js'
+import cookieParser from 'cookie-parser';
+
 const app=express();
 
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 connectDB();
 const PORT=process.env.PORT;
 app.use(cors({

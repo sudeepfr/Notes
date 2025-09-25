@@ -1,10 +1,10 @@
 import {useState,useContext} from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Login=()=>{
     const [form,setForm]=useState({email:'',password:''});
-    const {login}=useContext(AuthContext);
+    const {user,login,loading}=useContext(AuthContext);
     const navigate=useNavigate();
 
         const handleSubmit=async()=>{
@@ -16,7 +16,9 @@ const Login=()=>{
                  alert(err.response?.data?.message || 'Login failed');
              }
         }
-
+        if (loading) return <p>Loading...</p>
+        if (user) return <Navigate to="/notes" />
+         
      return (
     <div className="max-w-md mx-auto bg-white shadow-md rounded p-6">
       <h2 className="text-2xl font-bold mb-4 text-center">Login</h2>
