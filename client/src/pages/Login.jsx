@@ -7,13 +7,13 @@ const Login=()=>{
     const {user,login,loading}=useContext(AuthContext);
     const navigate=useNavigate();
 
-        const handleSubmit=async()=>{
+        const handleSubmit=async(e)=>{
              e.preventDefault();
              try{
                  await login(form.email,form.password);
-                 navigate('/notes');
+                 navigate('/');
              }catch(error){
-                 alert(err.response?.data?.message || 'Login failed');
+                 alert(error.response?.data?.message || 'Login failed');
              }
         }
         if (loading) return <p>Loading...</p>

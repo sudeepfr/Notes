@@ -1,6 +1,4 @@
 import { useState } from "react"
-import { AuthContext } from "../context/AuthContext";
-import { useContext } from "react";
 import { useEffect } from "react";
 import api from "../api/axios";
 const Notes=()=>{
@@ -16,7 +14,7 @@ const Notes=()=>{
          loadNotes();
      },[]);
 
-     const addNote=async()=>{
+     const addNote=async(e)=>{
          e.preventDefault();
          if (!form.title || !form.description) return;
          await api.post(`/api/notes`,form);
@@ -29,7 +27,7 @@ const Notes=()=>{
       }
 
      return (
-        <div>
+        <div className="min-h-screen bg-gray-100 p-4">
             <div className="max-w-2xl mx-auto">
 
             <form onSubmit={addNote} className="space-y-4 bg-white p-6 rounded shadow">
@@ -39,19 +37,20 @@ const Notes=()=>{
             </form>
 
             </div>
-            <ul className="mt-6 space-y-4">
+
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
                 {notes.map((note)=>(
-                  <li className="bg-gray-100 p-4 rounded shadow flex justify-between items-start" key={note._id}>
-
-                    <div>
+                  <div className="bg-gray-100 p-4 rounded shadow flex flex-col space-y-2" key={note._id}>
                      <h3 className="font-bold text-lg">{note.title}</h3>
-                     <p className="text-gray-700 mt-1">{note.description}</p>
-                    </div>
-
-                    <button  onClick={()=>deleteNote (note._id)} className="ml-4 text-red-600 hover:text-red-800">Delete</button>
-                  </li>  
+                     <p className="text-gray-700 mt-1 max-h-20 line-clamp-3">{note.description}</p>
+                     <div className="self-start">ijh
+                     <button  onClick={()=>deleteNote (note._id)} className="self-start text-white bg-red-500 px-3  py-1 rounded hover:bg-red-600">Delete</button>
+                     <button  onClick={()=>updateNote (note._id)} className="self-start text-white bg-yellow-500 px-3 m-2 py-1 rounded hover:bg-yellow-600">Update</button>
+                     </div>
+                  </div>  
                 ))}
-            </ul>
+            </div>
+
         </div>
      )
 }

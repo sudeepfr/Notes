@@ -1,4 +1,4 @@
-import { Router, Routes, Route } from 'react-router-dom';
+import { Router, Routes, Route, useNavigate } from 'react-router-dom';
 import ProtectedRoute from './protectRoutes/ProtectedRoute';
 import Register from './pages/Register';
 import Login from './pages/login';
@@ -9,21 +9,27 @@ import { useContext } from 'react';
 
 const App = () => { 
     const {user,logout}=useContext(AuthContext);
-
+    const navigate=useNavigate();
+    console.log(user);
     return (
         <>
          <nav className='flex justify-between items-center bg-blue-600 p-4 text-white'>
                      <h1 className="text-xl font-bold">Notes App</h1> 
-                     {user && (
+                     {user ? (
                         <button 
                         onClick={logout} 
                         className='bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100'
                         >Logout</button>
+                     ):(
+                        <button  onClick={()=>navigate('/register')} 
+                        className='bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100'
+                        >Register</button>
                      )}
                  </nav>
          
           <div className='p-6'>
             <Routes>  
+                <Route path="/" element={user ? <Notes /> : <Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login/>} />
                 <Route path="/notes" element={<ProtectedRoute>

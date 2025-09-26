@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const Register = () => {
-  const { register,registered,setRegistered } = useContext(AuthContext);
+  const { register,registered,setRegistered,setUser } = useContext(AuthContext);
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate();
 
@@ -23,7 +23,11 @@ const Register = () => {
       <div className="mt-4 text-center">
         <p>Registration successful! Please login to continue.</p>
         <button
-          onClick={() => navigate("/login")}
+          onClick={() =>{
+            setUser(null);
+            setRegistered(false);
+             navigate("/login")
+          } }
           className="mt-2 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
         >
           Go to Login
