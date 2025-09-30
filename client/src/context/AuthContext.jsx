@@ -8,21 +8,20 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [registered, setRegistered] = useState(false);
 
-    useEffect(() => {
+    useEffect(() => {     
         const loadUser = async () => {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                setLoading(false);
-                return;
-            }
+            // const token = localStorage.getItem("token");
+            // console.log(token);
+            // if (!token) {
+            //     setLoading(false);
+            //     return;
+            // }
             try {
-                const res = await api.get(`/api/auth/me`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                const res = await api.get(`/api/auth/me`);
                 setUser(res.data.user);
             } catch (error) {
                 setUser(null);
-                localStorage.removeItem("token");
+                // localStorage.removeItem("token");
             } finally {
                 setLoading(false);
             }
@@ -32,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         const res = await api.post(`/api/auth/login`, { email, password });
-        localStorage.setItem("token", res.data.token);
+        // localStorage.setItem("token", res.data.token);
         setUser(res.data.user);
 
     }
@@ -49,7 +48,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         await api.post(`/api/auth/logout`);
-        localStorage.removeItem("token");
+        // localStorage.removeItem("token");
         setUser(null);
     }
 

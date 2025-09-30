@@ -48,7 +48,7 @@ export const login=async (req,res)=>{
             name:user.name,
             email:user.email,
             },
-        message:"Logged in Successfully"
+            message:"Logged in Successfully"
         })
 
     }catch (error){

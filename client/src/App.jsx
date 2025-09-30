@@ -16,10 +16,15 @@ const App = () => {
          <nav className='flex justify-between items-center bg-blue-600 p-4 text-white'>
                      <h1 className="text-xl font-bold">Notes App</h1> 
                      {user ? (
+                        <div>
+                        <div className='flex mr-4 space-x-4'>
+                        <h1 className="font-bold text-lg">{`Welcome,  ${user.name}`}</h1>
                         <button 
                         onClick={logout} 
                         className='bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100'
                         >Logout</button>
+                        </div>
+                        </div>
                      ):(
                         <button  onClick={()=>navigate('/register')} 
                         className='bg-white text-blue-600 px-3 py-1 rounded hover:bg-gray-100'

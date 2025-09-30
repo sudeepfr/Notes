@@ -19,10 +19,6 @@ export const updateNote=async(req,res)=>{
     const note=await Note.findById(req.params.id);
     //if no note found ,return 404
     if(!note) return res.status(404).json({message:"not found"});
-    // Check ownership (only  the creatorcan update it )
-    if(note.user.toString()!==req.user.id){
-      return res.status(403).json({message:'Not allowed'});
-    }
     // update the note and return the new version 
     const updated=await Note.findByIdAndUpdate(req.params.id, req.body,{new:true});
     res.json({"success":true,updated});
@@ -30,8 +26,7 @@ export const updateNote=async(req,res)=>{
 
 export const deleteNote=async(req,res)=>{
      const note =await Note.findById(req.params.id);
-     if(!data) return res.status(404).json({message:'not found '});
-     if (note.user.toString()!==req.user.id) return res.status(403).json({message:'Not allowed'});
+     if(!note) return res.status(404).json({message:'not found '});
      await note.deleteOne();
      res.json({"success":true,"message":"Note deleted"});
 };
