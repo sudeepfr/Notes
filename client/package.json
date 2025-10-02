@@ -11,11 +11,15 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.13",
+    "@tiptap/extension-image": "^3.6.2",
+    "@tiptap/react": "^3.6.2",
+    "@tiptap/starter-kit": "^3.6.2",
     "axios": "^1.12.2",
     "date-fns": "^4.1.0",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-hot-toast": "^2.6.0",
+    "react-quill": "^2.0.0",
     "react-router-dom": "^7.9.1",
     "react-toastify": "^11.0.5",
     "tailwindcss": "^4.1.13"

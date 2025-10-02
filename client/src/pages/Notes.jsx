@@ -2,13 +2,14 @@ import { useContext, useState } from "react"
 import { useEffect } from "react";
 import { format } from "date-fns";
 import api from "../api/axios";
-import { AuthContext } from "../context/AuthContext";
+import Editor from "../components/Editor";
+import "../App.css";
 const Notes = () => {
     const [form, setForm] = useState({ title: "", description: "" });
     const [notes, setNotes] = useState([]);
     const [filter,setFilter]=useState('all');
+    const[editingId,setEditingId]=useState(null);
     const sortNotes=[...notes];
-    const {user}=useContext(AuthContext)
 
     const loadNotes = async () => {
         const res = await api.get(`/api/notes`);
@@ -19,10 +20,17 @@ const Notes = () => {
         loadNotes();
     }, []);
 
-    const addNote = async (e) => {
+    const addNoteOrUpdate= async (e) => {
         e.preventDefault();
         if (!form.title || !form.description) return;
-        await api.post(`/api/notes`, form);
+        
+        if(editingId){
+              await api.put(`/api/notes/${editingId}`,form);
+              setEditingId(null);
+        }else{
+            await api.post(`/api/notes`, form);  
+        }
+
         setForm({ title: "", description: "" });
         loadNotes();
     }
@@ -32,6 +40,7 @@ const Notes = () => {
     }
     const updateNote = async (note) => {
         setForm({ title: note.title, description: note.description });
+        setEditingId(note._id);
     }
     {filter==='latest' &&sortNotes.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))}
     {filter==='oldest' &&sortNotes.sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt))}
@@ -39,9 +48,9 @@ const Notes = () => {
         <div className="min-h-screen bg-gray-100 p-4">
 
             <div className="max-w-2xl mx-auto">
-                <form onSubmit={addNote} className="space-y-4 bg-white p-6 rounded shadow">
+                <form onSubmit={addNoteOrUpdate} className="space-y-4 bg-white p-6 rounded shadow">
                     <input className="w-full border px-3 py-2 rounded" placeholder="Title" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
-                    <textarea className="w-full border px-3 py-2 rounded" rows="4" placeholder='Desciption' value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
+                    <Editor value={form.description} onChange={(content)=>setForm({...form, description:content})}/>
                     <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700" type="submit">Add Notes</button>
                 </form>
             </div>
@@ -59,7 +68,7 @@ const Notes = () => {
                     <div className="bg-gray-100 p-4 rounded shadow flex flex-col space-y-2" key={note._id}>
                         <h1 className=" text-gray-500 w-auto"> {format(new Date(note.createdAt), "dd MMM yyyy, hh:mm a")}</h1>
                         <h3 className="font-bold text-lg">{note.title}</h3>
-                        <p className="text-gray-700 mt-1   line-clamp-3">{note.description}</p>
+                        <p className="prose text-gray-700 mt-1 line-clamp-3 ql-editor" dangerouslySetInnerHTML={{ __html: note.description }}/> 
 
                         <div className="self-start">
                             <button onClick={() => deleteNote(note._id)} className="self-start text-white bg-red-500 px-3  py-1 rounded hover:bg-red-600">Delete</button>
